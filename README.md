@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next-Auth
 
-## Getting Started
+Welcome to my ongoing Next.js project!
 
-First, run the development server:
+This project focuses on implementing authentication functionalities using Next.js.
+
+## Description
+
+This project is aimed at creating a Next.js application with authentication features such as signup, login, logout, email verification, and fetching user profile.
+
+## Features
+
+- **Signup:** Users can sign up for an account.
+- **Login:** Existing users can log in to their accounts.
+- **Logout:** Users can log out of their accounts.
+- **Email Verification:** Email verification for account activation.
+- **Profile:** Route for fetching user profile.
+
+## Setup
+
+**Clone the repository:**
+
+```bash
+git clone https://github.com/iamsufiyan560/NEXT_AUTH.git
+```
+
+**Install dependencies:**
+
+```bash
+npm install
+```
+
+**Set up environment variables:**
+
+- Create a `.env.local` file in the root directory.
+- Add necessary environment variables like database connection, email configuration, etc.
+
+**Run the development server:**
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Access the application at: `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Technologies Used
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **Frontend:** Next.js
+- **Backend:** Node.js, Express.js
+- **Database:** Mongo DB
+- **Authentication:** NextAuth.js
+- **Email:** Nodemailer
+- **Testing:** MailTrap
 
-## Learn More
+## Contribution
 
-To learn more about Next.js, take a look at the following resources:
+Contributions are welcome! Feel free to fork the project and submit pull requests.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+This project is licensed under the MIT License. See the LICENSE file for details.
