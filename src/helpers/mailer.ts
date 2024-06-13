@@ -6,11 +6,13 @@ export const sendEmail = async ({ email, emailType, userId }: any) => {
   try {
     // create a hased token
     const hashedToken = await bcryptjs.hash(userId.toString(), 10);
-
+    const currentTime = new Date();
     if (emailType === "VERIFY") {
       await User.findByIdAndUpdate(userId, {
         verifyToken: hashedToken,
-        verifyTokenExpiry: Date.now() + 3600000,
+        verifyTokenExpiry: new Date(
+          currentTime.getTime() + 15 * 24 * 60 * 60 * 1000
+        ),
       });
     } else if (emailType === "RESET") {
       await User.findByIdAndUpdate(userId, {
