@@ -10,7 +10,6 @@ export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
     const { username, email, password } = reqBody;
-    console.log(reqBody);
 
     const user = await User.findOne({ email });
 
@@ -24,11 +23,16 @@ export async function POST(request: NextRequest) {
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(password, salt);
 
+    const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${username}`;
+
     const newUser = new User({
       username,
       email,
       password: hashedPassword,
+      profilePicture: boyProfilePic,
     });
+
+    console.log(boyProfilePic);
 
     const savedUser = await newUser.save();
     console.log(savedUser);

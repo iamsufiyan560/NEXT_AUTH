@@ -6,6 +6,10 @@ const userSchema = new mongoose.Schema({
     required: [true, "Please provide a username"],
     unique: true,
   },
+  profilePicture: {
+    type: String,
+    default: "",
+  },
   email: {
     type: String,
     required: [true, "Please provide a email"],
@@ -23,6 +27,7 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+
   forgotPasswordToken: String,
   forgotPasswordTokenExpiry: Date,
   verifyToken: String,

@@ -1,63 +1,109 @@
 "use client";
+import useGetUserProfile from "@/hooks/useGetUserProfile";
 import axios from "axios";
-import Link from "next/link";
-import React, { useState } from "react";
-import { toast } from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function ProfilePage() {
-  const router = useRouter();
-  const [data, setData]: any = useState("nothing");
-  const logout = async () => {
-    try {
-      await axios.get("/api/users/logout");
-      toast.success("Logout successful");
-      router.push("/login");
-    } catch (error: any) {
-      console.log(error.message);
-      toast.error(error.message);
-    }
+  const { data, loading, setData } = useGetUserProfile();
+  const [updating, setupdating] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
-  const getUserDetails = async () => {
-    const res = await axios.get("/api/users/me");
-
-    const user = res.data.data;
-    const info = [user._id, user.email, user.username];
-
-    setData(info);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setupdating(true);
+    try {
+      const res = await axios.post("/api/users/update", data);
+      toast.success("Profile Update successful");
+      data.password = "";
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setupdating(false);
+    }
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
-      <h1>Profile</h1>
-      <hr />
-      <p>Profile page</p>
-      <h2 className="p-1 rounded bg-green-500">
-        {data === "nothing" ? (
-          "Nothing"
-        ) : (
-          <div className="flex flex-col">
-            {data.map((datas: any, i: any) => (
-              <Link href={`/profile/${data}`}>{datas}</Link>
-            ))}
-          </div>
-        )}
-      </h2>
-      <hr />
-      <button
-        onClick={logout}
-        className="bg-blue-500 mt-4 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      >
-        Logout
-      </button>
+      <div>
+        <Toaster />
+      </div>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+          <p className="text-3xl sm:text-2xl font-bold mb-8">Profile page</p>
 
-      <button
-        onClick={getUserDetails}
-        className="bg-green-800 mt-4 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      >
-        GetUser Details
-      </button>
+          <form
+            onSubmit={handleSubmit}
+            className="flex    flex-col gap-4 sm:w-2/3  lg:w-1/4 md:w-2/4  px-4 py-8 rounded-xl border-2  "
+          >
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={data.email}
+                onChange={handleChange}
+                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Username
+              </label>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                value={data.username}
+                onChange={handleChange}
+                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={data.password}
+                onChange={handleChange}
+                className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+              />
+            </div>
+            <button
+              type="submit"
+              className="bg-green-800 mt-4 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              disabled={updating}
+            >
+              {updating ? "Updating..." : "Update Profile"}
+            </button>
+          </form>
+        </>
+      )}
+      <hr />
     </div>
   );
 }

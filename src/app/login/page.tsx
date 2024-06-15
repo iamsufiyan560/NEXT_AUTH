@@ -81,6 +81,7 @@ export default function LoginPage() {
       }
 
       toast.success("Login success");
+
       router.push("/profile");
     } catch (error: any) {
       toast.error(error.message);
@@ -190,7 +191,7 @@ export default function LoginPage() {
           </Stack>
         </Box>
       </Stack>
-      <Toaster position="top-left" reverseOrder={false} />
+      <Toaster />
     </Flex>
   );
 }

@@ -213,7 +213,7 @@ export default function SignupPage() {
           </Stack>
         </Box>
       </Stack>
-      <Toaster position="top-left" reverseOrder={false} />
+      <Toaster />
     </Flex>
   );
 }
