@@ -89,7 +89,7 @@ export default function SignupPage() {
       toast.success("Signup success");
       router.push("/login");
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error("User Already");
     } finally {
       setLoading(false);
     }

@@ -32,10 +32,7 @@ export async function POST(request: NextRequest) {
       profilePicture: boyProfilePic,
     });
 
-    console.log(boyProfilePic);
-
     const savedUser = await newUser.save();
-    console.log(savedUser);
 
     await sendEmail({ email, emailType: "VERIFY", userId: savedUser._id });
 
