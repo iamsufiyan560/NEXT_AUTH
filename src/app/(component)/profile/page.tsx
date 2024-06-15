@@ -36,7 +36,22 @@ export default function ProfilePage() {
         <Toaster />
       </div>
       {loading ? (
-        <p>Loading...</p>
+        <>
+          <div className="lds-spinner">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </>
       ) : (
         <>
           <p className="text-3xl sm:text-2xl font-bold mb-8">Profile page</p>
