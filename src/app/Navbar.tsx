@@ -6,11 +6,13 @@ import { usePathname, useRouter } from "next/navigation";
 import useGetUserProfile from "@/hooks/useGetUserProfile";
 
 const Navbar = () => {
-  const { data, loading } = useGetUserProfile();
+  const { data } = useGetUserProfile();
   const [imageLoading, setImageLoading] = useState(true);
   const [imageError, setImageError] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+
+  const Admin = data?.isAdmin;
 
   const logout = async () => {
     try {
@@ -49,6 +51,15 @@ const Navbar = () => {
           >
             <Link href="/about">About</Link>
           </div>
+          {Admin && (
+            <div
+              className={`${
+                pathname === "/projects" ? "text-pink-500" : "text-white"
+              } hover:bg-sky-400 rounded-md border px-2 py-1`}
+            >
+              <Link href="/projects">Admin</Link>
+            </div>
+          )}
         </div>
         <h1 className="font-bold text-2xl text-amber-200 hidden md:block">
           Next-Auth

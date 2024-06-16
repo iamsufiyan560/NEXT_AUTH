@@ -10,6 +10,7 @@ const useGetUserProfile = () => {
     username: "",
     password: "",
     profilePicture: "",
+    isAdmin: "",
   });
 
   useEffect(() => {
@@ -18,11 +19,13 @@ const useGetUserProfile = () => {
       try {
         const res = await axios.get("/api/users/me");
         const user = res.data.data;
+
         setData({
           email: user.email,
           username: user.username,
           password: user.password,
           profilePicture: user.profilePicture,
+          isAdmin: user.isAdmin,
         });
       } catch (error: any) {
         toast.error(error.message);

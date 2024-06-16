@@ -82,7 +82,7 @@ export default function LoginPage() {
 
       toast.success("Login success");
 
-      router.push("/profile");
+      router.push("/");
     } catch (error: any) {
       toast.error(error.message);
     } finally {
