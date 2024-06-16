@@ -2,10 +2,12 @@
 
 import useGetUserProfile from "@/hooks/useGetUserProfile";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
 const Page = () => {
   const { data, loading } = useGetUserProfile();
+  const router = useRouter();
 
   const isAdmin = data?.isAdmin;
 
@@ -15,6 +17,7 @@ const Page = () => {
   const [githubLink, setGithubLink] = useState("");
   const [liveLink, setLiveLink] = useState("");
   const [lang, setLang] = useState("");
+  const [countdown, setCountdown] = useState(5);
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -37,7 +40,6 @@ const Page = () => {
       formData.append("lang", lang);
 
       const response = await axios.post("/api/projects", formData);
-
       const data = await response.data;
 
       console.log({ data });
@@ -45,6 +47,46 @@ const Page = () => {
       console.log("error", error.message);
     }
   };
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (!isAdmin) {
+      timer = setInterval(() => {
+        setCountdown((prevCountdown) => {
+          if (prevCountdown === 1) {
+            clearInterval(timer);
+            router.push("/");
+            return 0;
+          }
+          return prevCountdown - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [isAdmin, router]);
+
+  if (loading) {
+    return (
+      <>
+        <div className="flex flex-col items-center justify-center min-h-screen py-2">
+          <div className="lds-spinner ">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
@@ -93,9 +135,9 @@ const Page = () => {
           <button className="bg-black text-white px-4 py-2 mt-4">Upload</button>
         </form>
       ) : (
-        <div className="flex mt-[10%] justify-center items-center text-red-600 text-3xl font-semibold">
-          {" "}
-          Unauthorized: You are not an admin.
+        <div className=" flex justify-center items-center mt-[10%] text-red-700 text-3xl font-semibold ">
+          <p>Unauthorized: You are not an admin.</p>
+          <p>GET OUT {countdown}...</p>
         </div>
       )}
     </>
