@@ -4,6 +4,7 @@ import useGetUserProfile from "@/hooks/useGetUserProfile";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const Page = () => {
   const { data, loading } = useGetUserProfile();
@@ -42,9 +43,11 @@ const Page = () => {
       const response = await axios.post("/api/projects", formData);
       const data = await response.data;
 
+      toast.success("Created Succesfully");
+
       console.log({ data });
     } catch (error: any) {
-      console.log("error", error.message);
+      toast.error("Error ");
     }
   };
 

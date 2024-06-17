@@ -6,34 +6,43 @@ import { NextRequest, NextResponse } from "next/server";
 connect();
 
 export const POST = async (req: NextRequest) => {
-  const formData = await req.formData();
+  try {
+    const formData = await req.formData();
 
-  const image = formData.get("image") as unknown as File;
-  const name = formData.get("name") as string;
-  const description = formData.get("description") as string;
-  const githubLink = formData.get("githubLink") as string;
-  const liveLink = formData.get("liveLink") as string;
-  const lang = formData.get("lang") as string;
+    const image = formData.get("image") as unknown as File;
+    const name = formData.get("name") as string;
+    const description = formData.get("description") as string;
+    const githubLink = formData.get("githubLink") as string;
+    const liveLink = formData.get("liveLink") as string;
+    const lang = formData.get("lang") as string;
 
-  const imageData: any = await UploadImage(image, "Portfolio projects");
+    const imageData: any = await UploadImage(image, "Portfolio projects");
 
-  const newProjects = new Projects({
-    name,
-    description,
-    githubLink,
-    liveLink,
-    lang,
-    imageSrc: imageData?.secure_url,
-    id: imageData?.public_id,
-  });
+    const newProjects = new Projects({
+      name,
+      description,
+      githubLink,
+      liveLink,
+      lang,
+      imageSrc: imageData?.secure_url,
+      id: imageData?.public_id,
+    });
 
-  const savedProjects = await newProjects.save();
+    const savedProjects = await newProjects.save();
 
-  return NextResponse.json({
-    msg: "Project created successfully",
-    success: true,
-    savedProjects,
-  });
+    return NextResponse.json({
+      msg: "Project created successfully",
+      success: true,
+      savedProjects,
+    });
+  } catch (error: any) {
+    console.error("Error creating project:", error);
+    return NextResponse.json({
+      msg: "Failed to create project",
+      success: false,
+      error: error.message,
+    });
+  }
 };
 
 export const GET = async () => {
@@ -53,3 +62,20 @@ export const GET = async () => {
     });
   }
 };
+
+export default async function handler(req: NextRequest) {
+  switch (req.method) {
+    case "POST":
+      return await POST(req);
+    case "GET":
+      return await GET();
+    default:
+      return NextResponse.json(
+        {
+          msg: `Method ${req.method} Not Allowed`,
+          success: false,
+        },
+        { status: 405 }
+      );
+  }
+}
