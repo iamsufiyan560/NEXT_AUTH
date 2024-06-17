@@ -3,13 +3,20 @@
 import useGetUserProfile from "@/hooks/useGetUserProfile";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import toast, { Toaster } from "react-hot-toast";
 
 const Page = () => {
   const { data, loading } = useGetUserProfile();
   const router = useRouter();
   const [isLoading, setIsloading] = useState(false);
+  const [error, setError] = useState<String>();
 
   const isAdmin = data?.isAdmin;
 
@@ -21,6 +28,8 @@ const Page = () => {
   const [lang, setLang] = useState("");
   const [countdown, setCountdown] = useState(5);
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setImage(e.target.files[0]);
@@ -31,11 +40,18 @@ const Page = () => {
     e.preventDefault();
     setIsloading(true);
     try {
-      if (!image) {
-        return;
+      if (
+        !image &&
+        !name &&
+        !description &&
+        !githubLink &&
+        !liveLink &&
+        !lang
+      ) {
+        setError("All field is required");
       }
       const formData = new FormData();
-      formData.append("image", image);
+      formData.append("image", image!);
       formData.append("name", name);
       formData.append("description", description);
       formData.append("githubLink", githubLink);
@@ -52,6 +68,9 @@ const Page = () => {
       setGithubLink("");
       setLiveLink("");
       setLang("");
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     } catch (error: any) {
       toast.error("Error ");
     } finally {
@@ -105,6 +124,7 @@ const Page = () => {
       {isAdmin ? (
         <form onSubmit={onSubmitHandler} className="w-1/2 mx-auto py-10">
           <input
+            ref={fileInputRef}
             onChange={onChangeHandler}
             type="file"
             name="image"
