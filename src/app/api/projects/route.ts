@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 connect();
 
-export const POST = async (req: NextRequest) => {
+export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
 
@@ -43,9 +43,9 @@ export const POST = async (req: NextRequest) => {
       error: error.message,
     });
   }
-};
+}
 
-export const GET = async () => {
+export async function GET() {
   try {
     const projects = await Projects.find();
     return NextResponse.json({
@@ -60,22 +60,5 @@ export const GET = async () => {
       success: false,
       error: error.message,
     });
-  }
-};
-
-export default async function handler(req: NextRequest) {
-  switch (req.method) {
-    case "POST":
-      return await POST(req);
-    case "GET":
-      return await GET();
-    default:
-      return NextResponse.json(
-        {
-          msg: `Method ${req.method} Not Allowed`,
-          success: false,
-        },
-        { status: 405 }
-      );
   }
 }
