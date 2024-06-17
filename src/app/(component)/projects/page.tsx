@@ -4,11 +4,12 @@ import useGetUserProfile from "@/hooks/useGetUserProfile";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 const Page = () => {
   const { data, loading } = useGetUserProfile();
   const router = useRouter();
+  const [isLoading, setIsloading] = useState(false);
 
   const isAdmin = data?.isAdmin;
 
@@ -28,6 +29,7 @@ const Page = () => {
 
   const onSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsloading(true);
     try {
       if (!image) {
         return;
@@ -44,10 +46,16 @@ const Page = () => {
       const data = await response.data;
 
       toast.success("Created Succesfully");
-
-      console.log({ data });
+      setImage(null);
+      setName("");
+      setDescription("");
+      setGithubLink("");
+      setLiveLink("");
+      setLang("");
     } catch (error: any) {
       toast.error("Error ");
+    } finally {
+      setIsloading(false);
     }
   };
 
@@ -93,6 +101,7 @@ const Page = () => {
 
   return (
     <>
+      <Toaster />
       {isAdmin ? (
         <form onSubmit={onSubmitHandler} className="w-1/2 mx-auto py-10">
           <input
@@ -135,7 +144,9 @@ const Page = () => {
             onChange={(e) => setLang(e.target.value)}
             className="block w-full border border-gray-300 rounded-md px-4 py-2 mt-4"
           />
-          <button className="bg-black text-white px-4 py-2 mt-4">Upload</button>
+          <button className="bg-black text-white px-4 py-2 mt-4">
+            {isLoading ? "Uploading..." : "Upload"}
+          </button>
         </form>
       ) : (
         <div className=" flex justify-center items-center mt-[10%] text-red-700 text-3xl font-semibold ">
