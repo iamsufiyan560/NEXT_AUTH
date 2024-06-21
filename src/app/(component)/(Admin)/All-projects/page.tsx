@@ -10,7 +10,7 @@ import Sidebar from "@/components/Sidebar";
 import Link from "next/link";
 import Image from "next/image";
 
-const page = () => {
+const Page = () => {
   const [projects, setProjects]: any = useState([]);
 
   const [error, setError]: any = useState(null);
@@ -127,4 +127,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
