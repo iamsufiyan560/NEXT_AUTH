@@ -2,6 +2,7 @@
 
 import useGetUserProfile from "@/hooks/useGetUserProfile";
 import axios from "axios";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, {
   ChangeEvent,
@@ -11,8 +12,9 @@ import React, {
   useState,
 } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import Sidebar from "./Sidebar";
 
-const Page = () => {
+const CreateProject = () => {
   const { data, loading } = useGetUserProfile();
   const router = useRouter();
   const [isLoading, setIsloading] = useState(false);
@@ -98,7 +100,7 @@ const Page = () => {
   if (loading) {
     return (
       <>
-        <div className="flex flex-col items-center justify-center min-h-screen py-2">
+        <div className="flex flex-col items-center justify-center min-h-screen py-2 ml-[40%]">
           <div className="lds-spinner ">
             <div></div>
             <div></div>
@@ -121,7 +123,8 @@ const Page = () => {
   return (
     <>
       <Toaster />
-      {isAdmin ? (
+
+      {isAdmin && (
         <form onSubmit={onSubmitHandler} className="w-1/2 mx-auto py-10">
           <input
             ref={fileInputRef}
@@ -168,8 +171,10 @@ const Page = () => {
             {isLoading ? "Uploading..." : "Upload"}
           </button>
         </form>
-      ) : (
-        <div className=" flex justify-center items-center mt-[10%] text-red-700 text-3xl font-semibold ">
+      )}
+
+      {!isAdmin && (
+        <div className=" ml-[30%]   flex justify-center items-center mt-[10%] text-red-700   text-3xl font-semibold     ">
           <p>Unauthorized: You are not an admin.</p>
           <p>GET OUT {countdown}...</p>
         </div>
@@ -178,4 +183,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default CreateProject;
