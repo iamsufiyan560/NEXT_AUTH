@@ -8,6 +8,7 @@ import useGetUserProfile from "@/hooks/useGetUserProfile";
 import { useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
 import Link from "next/link";
+import Image from "next/image";
 
 const page = () => {
   const [projects, setProjects]: any = useState([]);
@@ -64,7 +65,7 @@ const page = () => {
                 className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
               >
                 <a target="_blank" rel="noopener noreferrer">
-                  <img
+                  <Image
                     className="rounded-t-lg w-full h-48 object-cover"
                     src={project.imageSrc}
                     alt={project.name}

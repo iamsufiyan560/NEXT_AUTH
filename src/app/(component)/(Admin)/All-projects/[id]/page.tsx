@@ -5,13 +5,12 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
-export default function ExampleClientComponent() {
+const Page = () => {
   const params = useParams<{ id: string }>();
 
   const [projectData, setProjectData] = useState<any>({});
   const [loading, setLoading] = useState(true);
   const [update, setUpdate] = useState(false);
-  const [formData, setFormData] = useState({});
   const [error, setError] = useState();
 
   useEffect(() => {
@@ -174,4 +173,6 @@ export default function ExampleClientComponent() {
       </div>
     </>
   );
-}
+};
+
+export default Page;

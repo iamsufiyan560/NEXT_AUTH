@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { usePathname, useRouter } from "next/navigation";
 import useGetUserProfile from "@/hooks/useGetUserProfile";
+import Image from "next/image";
 
 const Navbar = () => {
   const { data } = useGetUserProfile();
@@ -71,7 +72,7 @@ const Navbar = () => {
                 <div className="h-12 w-12 rounded-full bg-gray-300 animate-pulse"></div>
               )}
               <Link href={"/profile"}>
-                <img
+                <Image
                   className={`h-12 w-12 rounded-full ${
                     imageLoading ? "hidden" : "block"
                   }`}
