@@ -72,7 +72,7 @@ const Navbar = () => {
                 <div className="h-12 w-12 rounded-full bg-gray-300 animate-pulse"></div>
               )}
               <Link href={"/profile"}>
-                <Image
+                <img
                   className={`h-12 w-12 rounded-full ${
                     imageLoading ? "hidden" : "block"
                   }`}
