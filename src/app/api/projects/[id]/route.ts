@@ -12,7 +12,7 @@ interface Context {
   params: Params;
 }
 
-export async function GET(request: NextResponse, context: Context) {
+export async function GET(request: NextRequest, context: Context) {
   const { id } = context.params;
 
   // Connect to the database
